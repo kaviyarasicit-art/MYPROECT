@@ -80,7 +80,7 @@ Add links to screenshots/video:
 - Budget setup/progress
 - Chatbot CRUD and insights
 
-Video: `PASTE_VIDEO_LINK_HERE`
+Video: https://myproect.vercel.app/
 
 ## Future Improvements
 
