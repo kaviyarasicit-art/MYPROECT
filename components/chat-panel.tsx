@@ -35,7 +35,21 @@ export function ChatPanel() {
           lastExpenseIds: lastExpenseIdsRef.current,
         }),
       });
-      const data = (await res.json()) as { reply?: string; error?: string; lastExpenseIds?: string[] };
+      const raw = await res.text();
+      let data: { reply?: string; error?: string; lastExpenseIds?: string[] } = {};
+      if (raw) {
+        try {
+          data = JSON.parse(raw) as {
+            reply?: string;
+            error?: string;
+            lastExpenseIds?: string[];
+          };
+        } catch {
+          data = {
+            error: "Server returned a non-JSON response. Please try again.",
+          };
+        }
+      }
       if (!res.ok) {
         setMessages((m) => [
           ...m,
