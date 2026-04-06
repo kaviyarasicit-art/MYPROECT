@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --surface: 15 23 42;
+  --surface-muted: 30 41 59;
+  --accent: 99 102 241;
+  --accent-fg: 255 255 255;
+  --foreground: 241 245 249;
+  --muted: 148 163 184;
+  --border: 51 65 85;
+}
+
+body {
+  color: rgb(var(--foreground));
+  background: linear-gradient(160deg, rgb(15 23 42) 0%, rgb(17 24 39) 45%, rgb(15 23 42) 100%);
+  min-height: 100vh;
+}
+
+@layer utilities {
+  .glass {
+    @apply border border-slate-700/60 bg-slate-900/50 backdrop-blur-md;
+  }
+}

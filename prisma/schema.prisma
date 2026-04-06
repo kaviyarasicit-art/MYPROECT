@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  name         String?
+  createdAt    DateTime  @default(now())
+  expenses     Expense[]
+  categories   Category[]
+  budgets      Budget[]
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  slug      String
+  color     String    @default("#6366f1")
+  isCustom  Boolean   @default(false)
+  expenses  Expense[]
+  budgets   Budget[]
+
+  @@unique([userId, slug])
+  @@index([userId])
+}
+
+model Expense {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categoryId    String
+  category      Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  amount        Float
+  date          DateTime
+  description   String   @default("")
+  merchant      String   @default("")
+  paymentMethod String   @default("card")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId, date])
+  @@index([userId, categoryId])
+}
+
+model Budget {
+  id         String      @id @default(cuid())
+  userId     String
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  year       Int
+  month      Int
+  kind       String      @default("OVERALL")
+  categoryId String?
+  category   Category?   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  amount     Float
+  alertAt    Float?
+  scopeKey   String      @unique
+
+  @@index([userId, year, month])
+}
