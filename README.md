@@ -2,7 +2,7 @@
 
 **Live Demo:** `PASTE_DEPLOYED_URL_HERE`
 
-ExpenseIQ is a full-stack expense tracking web app with an AI chatbot that manages finances through natural language (Create, Read, Update, Delete), analytics, and budget insights.
+ExpenseIQ is a full-stack expense tracking web app with an AI chatbot that supports natural-language CRUD, analytics, and budget insights.
 
 ## Setup Instructions
 
@@ -32,8 +32,8 @@ If `OPENAI_API_KEY` is missing/invalid, chatbot falls back to local intent mode.
 
 ### Vercel (recommended)
 
-1. Import this GitHub repo into Vercel.
-2. Add env vars (`DATABASE_URL`, `JWT_SECRET`, `OPENAI_API_KEY`, `OPENAI_MODEL`).
+1. Import this repo into Vercel.
+2. Set env vars (`DATABASE_URL`, `JWT_SECRET`, `OPENAI_API_KEY`, `OPENAI_MODEL`).
 3. Deploy.
 4. Run:
 
@@ -43,44 +43,52 @@ npx prisma db push
 
 5. Paste deployed URL at top of this README.
 
-## Architecture
+### Railway / Render
 
-- Next.js App Router for UI + API in one codebase.
-- Prisma ORM for typed DB operations.
-- JWT cookie auth for sessions.
-- Tool-based AI actions routed through `lib/chat-tools.ts`.
-- Context memory via `lastExpenseIds`.
-- Local chatbot fallback for demo reliability.
+1. Connect repo.
+2. Provision database and set `DATABASE_URL`.
+3. Build command: `npm run build`
+4. Start command: `npm start`
+5. Run `npx prisma db push`.
 
-## AI Integration
+## Architecture and Design Trade-offs
 
-- `/api/chat` receives message history and context.
-- Primary: OpenAI tool calling (`add_expenses`, `query_expenses`, `update_expense`, `delete_expense`, `compare_months`, etc.).
-- State handling:
-  - remembers recent expense IDs for follow-up commands
-  - supports lookup hints like "yesterday's grocery expense"
-- Fallback mode:
-  - local parser in `lib/local-chat.ts` maps NL intents to the same tool layer.
+- Next.js App Router for full-stack single codebase
+- Prisma ORM for type-safe DB operations
+- JWT cookie session auth
+- Tool-based AI integration through server-side tool execution
+- `lastExpenseIds` for context-aware follow-up operations
+- Local AI fallback for reliability without external key dependency
+
+## AI Integration (CRUD + State)
+
+- Chat UI sends conversation + context to `/api/chat`
+- Primary mode uses OpenAI tool calls:
+  - `add_expenses`, `query_expenses`, `update_expense`, `delete_expense`,
+  - `compare_months`, `spending_insights`, `get_budget_status`, etc.
+- Tools are executed in `lib/chat-tools.ts`
+- Stateful updates/deletes supported through recent expense tracking and lookup hints
+- Local fallback parser (`lib/local-chat.ts`) maps intents to the same tool layer
 
 ## Demo
 
-Add screenshot/video links here:
+Add links to screenshots/video:
 
 - Signup/Login
-- Dashboard charts
-- Transactions filtering/sorting/export
-- Budgets and progress
-- Chatbot CRUD + analytics conversation
+- Dashboard analytics
+- Transactions filtering/export
+- Budget setup/progress
+- Chatbot CRUD and insights
 
 Video: `PASTE_VIDEO_LINK_HERE`
 
 ## Future Improvements
 
-- Learn category preferences from corrections
+- Learn user-specific category mappings
+- Better multilingual NLP extraction
 - Recurring expense automation
-- Better multilingual NLP
-- Anomaly detection alerts
-- Expanded test coverage (unit/integration/e2e)
+- Alerting/notifications
+- More automated tests (unit/integration/e2e)
 
 ## Collaborators (Private Repo)
 
