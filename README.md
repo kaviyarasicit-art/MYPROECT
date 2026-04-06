@@ -90,19 +90,6 @@ Video: https://myproect.vercel.app/
 - Alerting/notifications
 - More automated tests (unit/integration/e2e)
 
-## Collaborators (Private Repo)
 
-Invite:
-
-- `Aswath363`
-- `akshaiP`
-- `ashwanthnebula`
-
-## Submission Checklist
-
-- [ ] Private repo
-- [ ] Collaborators invited
-- [ ] Live demo URL added
-- [ ] README completed
 - [ ] Screenshots/video attached
 - [ ] Email sent to `contact@nebulaknowlab.com`
